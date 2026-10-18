@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مصروفاتي - PRO-ART</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#7c4dff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="مصروفاتي">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#f4f2fb;--card:#fff;--tx:#1d1a2f;--mut:#6f6a86;--in:#12a150;--pe:#7c4dff;--wo:#f59e0b;--ne:#0ea5e9;--ln:#e6e2f3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16132a;--card:#211d3b;--tx:#f1eefc;--mut:#a39ec0;--ln:#332e55}}
+:root[data-theme="dark"]{--bg:#16132a;--card:#211d3b;--tx:#f1eefc;--mut:#a39ec0;--ln:#332e55}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Tahoma,"Segoe UI",Arial,sans-serif;line-height:1.5}
+main{max-width:520px;margin:0 auto;padding:16px}
+.hd{display:flex;align-items:center;gap:12px;margin:4px 0 14px}.hd img{height:50px;width:auto;border-radius:12px;box-shadow:0 4px 12px rgba(124,77,255,.35)}.hd h1{margin:0;font-size:22px}.hd small{color:var(--mut);letter-spacing:2px;font-weight:700}
+.tabs{display:flex;gap:6px;background:var(--card);padding:5px;border-radius:14px}
+.tabs button{flex:1;border:0;background:none;color:var(--mut);padding:9px;border-radius:10px;font:inherit;font-weight:700}
+.tabs button.on{background:var(--pe);color:#fff}
+.nav{display:flex;align-items:center;justify-content:space-between;margin:12px 0}
+.nav button{border:0;background:var(--card);color:var(--tx);width:38px;height:38px;border-radius:50%;font-size:18px}
+.nav span{font-weight:700;font-size:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.c{background:var(--card);border-radius:16px;padding:14px;border-inline-start:5px solid var(--k)}
+.c small{color:var(--mut);display:block}
+.c b{font-size:20px;display:block;margin-top:2px}
+.bar{display:flex;height:12px;border-radius:8px;overflow:hidden;background:var(--ln);margin:14px 0 4px}
+.bar i{display:block;height:100%}
+.leg{font-size:12px;color:var(--mut)}
+form{background:var(--card);border-radius:16px;padding:14px;margin:14px 0;display:grid;gap:10px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.seg label{text-align:center;padding:9px 4px;border-radius:10px;border:2px solid var(--ln);font-weight:700;font-size:14px}
+.seg input{display:none}
+.seg input:checked+span{display:none}
+input[type=number],input[type=text],input[type=date],textarea{width:100%;padding:11px;border-radius:10px;border:2px solid var(--ln);background:var(--bg);color:var(--tx);font:inherit}
+.go{border:0;border-radius:12px;padding:12px;font:inherit;font-weight:700;color:#fff;background:var(--pe)}
+.it{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:14px;padding:10px 12px;margin-bottom:8px;border-inline-start:5px solid var(--k)}
+.it div{flex:1;min-width:0}.it small{color:var(--mut)}
+.it b{white-space:nowrap}
+.it button{border:0;background:none;color:var(--mut);font-size:18px}
+.empty{text-align:center;color:var(--mut);padding:18px}
+.bk{display:flex;gap:8px;margin:16px 0}
+.bk button{flex:1;border:2px solid var(--ln);background:none;color:var(--tx);border-radius:12px;padding:9px;font:inherit}
+select{width:100%;padding:11px;border-radius:10px;border:2px solid var(--ln);background:var(--bg);color:var(--tx);font:inherit}
+h3{font-size:15px;margin:16px 0 8px}
+.r{position:relative;display:flex;justify-content:space-between;background:var(--card);border-radius:10px;padding:8px 12px;margin-bottom:6px;overflow:hidden}
+.r span,.r b{position:relative;z-index:1}
+.r i{position:absolute;top:0;bottom:0;inset-inline-start:0;opacity:.2}
+textarea{height:90px;direction:ltr;font-size:12px}
+</style>
+</head>
+<body>
+<main>
+<div class="hd"><img src="logo.png" alt="PRO-ART"><div><h1>مصروفاتي</h1></div></div>
+<div class="tabs"><button data-m="w" class="on">الأسبوع</button><button data-m="m">الشهر</button><button data-m="a">الكل</button></div>
+<div class="nav"><button id="nx">›</button><span id="lb"></span><button id="pv">‹</button></div>
+<div class="grid" id="sum"></div>
+<div class="bar" id="bar"></div><div class="leg" id="leg"></div>
+<div id="br"></div>
+
+<form id="f">
+<div class="seg" id="seg">
+<label style="--k:var(--in)" data-v="in">💵 دخل</label>
+<label style="--k:var(--pe)" data-v="pe">🧍 مصروف شخصي</label>
+<label style="--k:var(--wo)" data-v="wo">🎨 مصروف شغل</label>
+</div>
+<select id="cg"></select>
+<input type="number" id="am" inputmode="decimal" step="any" min="0" placeholder="المبلغ" required>
+<input type="text" id="nt" placeholder="ملاحظة (اختياري)">
+<input type="date" id="dt" required>
+<button class="go" id="gb">إضافة</button>
+</form>
+
+<div id="ls"></div>
+
+<div class="bk"><button id="ex">نسخ احتياطي</button><button id="im">استرجاع</button></div>
+<textarea id="ta" hidden placeholder="الصق النسخة الاحتياطية هنا ثم دوس استرجاع تاني"></textarea>
+</main>
+<script>
+const K={in:['دخل','var(--in)','+'],pe:['شخصي','var(--pe)','−'],wo:['شغل','var(--wo)','−']};
+const C={pe:['بقالة','دروس','مصروف للأولاد','كهرباء','مياه','غاز','إنترنت','اشتراكات شهرية','فاتورة تليفون محمول'],wo:['طباعة تابلوهات','طباعة قماش','خياطة قماش','نثريات','شراء قماش وفرو','خشب ميلامين','مستلزمات تصنيع']};
+let D=[],mode='w',off=0,typ='in';
+try{D=JSON.parse(localStorage.getItem('masrofaty')||'[]')}catch(e){D=[]}
+const $=id=>document.getElementById(id);
+const save=()=>{try{localStorage.setItem('masrofaty',JSON.stringify(D))}catch(e){}};
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const fmt=n=>(Math.round(n*100)/100).toLocaleString('ar-EG');
+const ar=d=>d.toLocaleDateString('ar-EG',{day:'numeric',month:'long'});
+function range(){
+ const t=new Date();t.setHours(12);
+ if(mode==='a')return[null,null,'كل الفترات'];
+ if(mode==='w'){const s=new Date(t);s.setDate(t.getDate()-((t.getDay()+1)%7)+off*7);const e=new Date(s);e.setDate(s.getDate()+6);return[iso(s),iso(e),ar(s)+' - '+ar(e)]}
+ const s=new Date(t.getFullYear(),t.getMonth()+off,1),e=new Date(s.getFullYear(),s.getMonth()+1,0);
+ return[iso(s),iso(e),s.toLocaleDateString('ar-EG',{month:'long',year:'numeric'})];
+}
+function draw(){
+ const[a,b,l]=range();$('lb').textContent=l;
+ $('nx').style.visibility=$('pv').style.visibility=mode==='a'?'hidden':'visible';
+ const L=D.filter(x=>!a||(x.d>=a&&x.d<=b)).sort((x,y)=>y.d.localeCompare(x.d)||y.id-x.id);
+ const s={in:0,pe:0,wo:0};L.forEach(x=>s[x.t]+=x.a);
+ const out=s.pe+s.wo,net=s.in-out;
+ const cards=[['دخل','var(--in)',s.in],['صافي',net>=0?'var(--ne)':'#e5484d',net],['مصروف شخصي','var(--pe)',s.pe],['مصروف شغل','var(--wo)',s.wo]];
+ $('sum').innerHTML=cards.map(c=>`<div class="c" style="--k:${c[1]}"><small>${c[0]}</small><b>${fmt(c[2])}</b></div>`).join('');
+ $('bar').innerHTML=out?`<i style="width:${s.pe/out*100}%;background:var(--pe)"></i><i style="width:${s.wo/out*100}%;background:var(--wo)"></i>`:'';
+ $('leg').textContent=out?`شخصي ${Math.round(s.pe/out*100)}٪ — شغل ${Math.round(s.wo/out*100)}٪ من المصروفات`:'';
+ const br=t=>{const m={};L.filter(x=>x.t===t).forEach(x=>{const k=x.c||'بدون تصنيف';m[k]=(m[k]||0)+x.a});const e=Object.entries(m).sort((p,q)=>q[1]-p[1]);return e.length?`<h3 style="color:${K[t][1]}">${t==='pe'?'تفاصيل الشخصي':'تفاصيل الشغل'}</h3>`+e.map(([k,v])=>`<div class="r"><span>${esc(k)}</span><b>${fmt(v)}</b><i style="width:${v/s[t]*100}%;background:${K[t][1]}"></i></div>`).join(''):''};
+ $('br').innerHTML=br('pe')+br('wo');
+ $('ls').innerHTML=L.length?L.map(x=>`<div class="it" style="--k:${K[x.t][1]}"><div><b style="color:${K[x.t][1]}">${x.c?K[x.t][0]+' · '+x.c:K[x.t][0]}</b> ${x.n?'· '+esc(x.n):''}<br><small>${ar(new Date(x.d+'T12:00'))}</small></div><b>${K[x.t][2]}${fmt(x.a)}</b><button data-x="${x.id}" aria-label="حذف">✕</button></div>`).join(''):'<div class="empty">مفيش حركات في الفترة دي. ضيف أول حركة 👆</div>';
+}
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function seg(){document.querySelectorAll('#seg label').forEach(l=>{const on=l.dataset.v===typ;l.style.borderColor=on?K[typ][1]:'';l.style.background=on?K[typ][1]:'';l.style.color=on?'#fff':''});$('gb').style.background=K[typ][1];const g=$('cg');g.hidden=typ==='in';g.innerHTML=(C[typ]||[]).map(c=>'<option>'+c+'</option>').join('')}
+$('seg').onclick=e=>{const l=e.target.closest('label');if(l){typ=l.dataset.v;seg()}};
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{mode=b.dataset.m;off=0;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));draw()});
+$('nx').onclick=()=>{off--;draw()};$('pv').onclick=()=>{off++;draw()};
+$('f').onsubmit=e=>{e.preventDefault();const a=parseFloat($('am').value);if(!(a>0))return;
+ D.push({id:Date.now(),t:typ,c:typ==='in'?'':$('cg').value,a,n:$('nt').value.trim(),d:$('dt').value});save();$('am').value=$('nt').value='';
+ const d=$('dt').value;if(mode!=='a'){const[x,y]=range();if(d<x||d>y)off=0}draw()};
+$('ls').onclick=e=>{const x=e.target.dataset.x;if(x){D=D.filter(i=>String(i.id)!==x);save();draw()}};
+$('ex').onclick=async()=>{const t=JSON.stringify(D);$('ta').hidden=false;$('ta').value=t;$('ta').select();try{await navigator.clipboard.writeText(t);$('ex').textContent='اتنسخت ✓'}catch(e){}};
+$('im').onclick=()=>{if($('ta').hidden){$('ta').hidden=false;$('ta').value='';return}try{const v=JSON.parse($('ta').value);if(Array.isArray(v)){D=v;save();draw();$('ta').hidden=true}}catch(e){$('ta').value='النسخة مش صحيحة'}};
+$('dt').value=iso(new Date());seg();draw();
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
